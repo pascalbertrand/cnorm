@@ -1,5 +1,27 @@
 #!/usr/bin/env python3
 import setuptools
+from setuptools.command.test import test as TestCommand
+import sys
+
+
+# https://pytest.org/latest/goodpractises.html#integration-with-setuptools-test-commands
+class PyTest(TestCommand):
+    user_options = [('pytest-args=', 'a', "Arguments to pass to py.test")]
+
+    def initialize_options(self):
+        TestCommand.initialize_options(self)
+        self.pytest_args = []
+
+    def finalize_options(self):
+        TestCommand.finalize_options(self)
+        self.test_args = []
+        self.test_suite = True
+
+    def run_tests(self):
+        import pytest  # import here, cause outside the eggs aren't loaded
+        errno = pytest.main(self.pytest_args)
+        sys.exit(errno)
+
 
 version = '4.0'
 release = '4.0.4'
@@ -24,14 +46,13 @@ setuptools.setup(
     ],
     install_requires=['pyrser'],
     packages=[
-	'cnorm',
-	'cnorm.parsing',
-	'cnorm.passes',
-	#'cnorm.type_handling'
-	],
+        'cnorm',
+        'cnorm.parsing',
+        'cnorm.passes',
+    ],
     entry_points={
         'console_scripts': ['cnorm=cnorm.main:main']
     },
-#    test_loader='unittest:TestLoader',
-#    test_suite='tests'
+    tests_require=['pytest'],
+    cmdclass={'test': PyTest},
 )
