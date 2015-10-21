@@ -1,0 +1,4 @@
+.DS_Store
+*.egg-info
+build
+tests/samples/*.c_out

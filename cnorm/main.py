@@ -32,18 +32,19 @@ parser.add_argument(
     action='store_true'
 )
 
-args = parser.parse_args()
+def main():
+    args = parser.parse_args()
 
-for f in args.filenames:
-    if f != '-' and os.path.exists(f):
-        cparse = Declaration()
-        ast = cparse.parse_file(f)
-        if args.dump:
-            print(vars(ast))
-        if args.yml:
-            print(ast.to_yml())
-        if ast:
-            if not args.parse:
-                print(ast.to_c())
-        else:
-            print("something goes wrong")
+    for f in args.filenames:
+        if f != '-' and os.path.exists(f):
+            cparse = Declaration()
+            ast = cparse.parse_file(f)
+            if args.dump:
+                print(vars(ast))
+            if args.yml:
+                print(ast.to_yml())
+            if ast:
+                if not args.parse:
+                    print(ast.to_c())
+            else:
+                print("something goes wrong")

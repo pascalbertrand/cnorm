@@ -29,6 +29,9 @@ setuptools.setup(
 	'cnorm.passes',
 	#'cnorm.type_handling'
 	],
+    entry_points={
+        'console_scripts': ['cnorm=cnorm.main:main']
+    },
 #    test_loader='unittest:TestLoader',
 #    test_suite='tests'
 )
